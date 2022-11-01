@@ -1,0 +1,7 @@
+% layout 'master';
+% title 'RCS User Management';
+ <h2 class="w3-text-teal"><%= $msg %></h2>
+
+<table class="w3-table w3-striped">
+  <%== $allusers %>
+</table>

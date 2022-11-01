@@ -1,0 +1,12 @@
+% layout 'master';
+% title 'RCS Management';
+ <h2 class="w3-text-teal"><%= $msg %></h2>
+<p>
+  This page was generated from the template "templates/example/welcome.html.ep"
+  and the layout "templates/layouts/default.html.ep",
+  <%= link_to 'click here' => url_for %> to reload the page or
+  <%= link_to 'here' => '/index.html' %> to move forward to a static page.
+</p>
+<p>
+and it's the starting point for RCS pages
+</p>
