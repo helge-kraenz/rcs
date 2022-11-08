@@ -1,5 +1,5 @@
 % layout 'master';
-% title 'RCS User Management';
+% title 'RCS User List';
 <h2 class="w3-text-teal"><%= $msg %></h2>
 
 <!-- The remove dialog {{{ -->

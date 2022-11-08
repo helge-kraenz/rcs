@@ -34,7 +34,7 @@ sub list
   # The renderer will use the statement handle to retrieve the data
   $self->render
   (
-    template      => "management/user" ,
+    template      => "user/list" ,
     msg           => "List of all users including their roles" ,
     username      => $self->session( 'username' ) ,
     error_message => $Error ,
@@ -72,7 +72,7 @@ sub edit
     # Render users edit page
     $self->render
     (
-      template      => "management/useredit" ,
+      template      => "user/edit" ,
       id            => $Id ,
       action        => 'edit' ,
       name          => $DBUser ,
@@ -137,7 +137,7 @@ sub add
   {
     $self->render
     (
-      template      => "management/useredit" ,
+      template      => "user/edit" ,
       id            => undef ,
       action        => 'add' ,
       name          => "" ,
