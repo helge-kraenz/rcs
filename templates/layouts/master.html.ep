@@ -54,7 +54,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
   <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
 -->
-  <% if( session( 'role' ) eq "admin" ) { %>
+  <% if( session( 'role' ) && session( 'role' ) eq "admin" ) { %>
     <a class="w3-bar-item w3-button w3-hover-black" href="/user">User Administration</a>
   <% } %>
 </nav>
