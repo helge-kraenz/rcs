@@ -21,64 +21,73 @@ sub debugInfo
 #  $self->log->debug( "--------------" );
 }
 
-# main {{{
-# Render main page - only visible after successful login
+# start {{{
 
-sub main
+# Handle request to start page.
+# The start page is shown after successful login before the user selectes something
+# from menu.
+# If not logged in it redirects to login page
+
+sub start
 {
   my $self = shift;
 
-  $self->debugInfo( "main start" );
+  $self->debugInfo( "start start" );
 
-  # Render template "example/welcome.html.ep" with message
-  $self->render
-  (
-    template => 'management/main' ,
-    msg      => 'Welcome RCS Management Console' ,
-    Role     => $self->session( 'role' ) || 'none' ,
-  );
+  if( ! $self->session( 'is_auth' ) )
+  {
+    $self->redirect_to( '/login' );
+  }
+  else
+  {
+    $self->render
+    (
+      template => 'management/main' ,
+      msg      => 'Welcome RCS Management Console' ,
+      Role     => $self->session( 'role' ) || 'none' ,
+    );
+  }
+
+  $self->debugInfo( "start end" );
 }
-# main }}}
+# start }}}
 
-# displayLogin {{{
-sub displayLogin
+# login {{{
+sub login
 {
   my $self = shift;
 
-  $self->debugInfo( "displayLogin start" );
+  my $Error = $self->param( 'error' ) || "";
+
+  $self->debugInfo( "login start" );
 
   # If already logged in then direct to home page, if not display login page
-  if( $self->alreadyLoggedIn() )
+  if( $self->session( 'is_auth' ) )
   {
-    # If you are using Mojolicious v9.25 and above use this if statement as re-rendering is forbidden
-    # Thank you @Paul and @Peter for pointing this out.
-    # if($self->session('is_auth')){
-
-    $self->main();
-
+    $self->redirect_to( '/' );
   }
   else
   {
     $self->render
     (
       template      => "management/login" ,
-      error_message =>  ""
+      error_message =>  $Error,
     );
   }
 
 }
-# displayLogin }}}
+# login }}}
 
-# validUserCheck {{{
+# doLogin {{{
 # Check for a valid username/password combination. On success initiates
-# a session and hands over control to main routine.
+# a session and redirects to main page
 # Display an error message otherwise and redirects to login page.
 
-sub validUserCheck
+sub doLogin
 {
   my $self = shift;
 
-  $self->debugInfo( "validUserCheck start" );
+  $self->debugInfo( "doLogin start" );
 
   # Get the user name and password from the page
   my $User     = $self->param( 'username' );
@@ -110,35 +119,29 @@ sub validUserCheck
   $self->session( expiration => 600     );    # expire this session in 10 minutes if no activity
 
   # Render main page
-  $self->main();
-}
-# validUserCheck }}}
+  $self->redirect_to( '/' );
 
-# alreadyLoggedIn {{{
+  $self->debugInfo( "doLogin end" );
+}
+# doLogin }}}
+
+# loggedIn {{{
 # Checks if a session is authenticated and returns true.
 # If not authenticated shows the login page and returns false.
 
-sub alreadyLoggedIn
+sub loggedIn
 {
   my $self = shift;
 
-  $self->debugInfo( "alreadyLoggedIn start" );
+  $self->debugInfo( "loggedIn start" );
 
-  $self->log->debug( "Authenticated(alreadyLoggedIn): " . ($self->session('is_auth')||"") );
-  # Checks if session flag (is_auth) is already set and returns true
-  return 1 if $self->session('is_auth');
-
+  # Return if we are logged in already
+  return 1 if $self->session( 'is_auth' );
 
   # If session flag not set re-direct to login page again.
-  $self->render
-  (
-    template      => "management/login" ,
-    error_message =>  "You are not logged in, please login to access this website" ,
-  );
-
-  return;
+  $self->redirect_to( '/login' , { error => "You are not logged in, please login to access this website" } );
 }
-# alreadyLoggedIn }}}
+# loggedIn }}}
 
 # logout {{{
 sub logout
