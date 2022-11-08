@@ -1,0 +1,52 @@
+% layout 'master';
+% title 'RCS User Management';
+<h2 class="w3-text-teal"><%= $msg %></h2>
+
+<!-- The remove dialog {{{ -->
+<div id="id01" class="w3-modal">
+  <div class="w3-modal-content">
+    <div class="w3-container">
+      <span onclick="document.getElementById('id01').style.display='none'"
+            class="w3-button w3-display-topright">&times;</span>
+      <p>Are you sure you want to delete user <b><span id='RemoveUser'></span></b></p>
+      <a id="RemoveButton" href="" class="w3-bar-item w3-button">Remove</a>
+      <a onclick="document.getElementById('id01').style.display='none'" class="w3-button">Cancel</a>
+  </div>
+  </div>
+</div> 
+<!-- The remove dialog }}} -->
+
+<!-- The user list {{{ -->
+<p>
+<a href="/user/add" class="w3-bar-item w3-button">Add User</a>
+</p>
+<table class="w3-table w3-striped">
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Role</th>
+    <th></th>
+  </tr>
+  <% while( my( $Id, $User , $Role ) = $sth->fetchrow_array ) { %>
+    <tr>
+      <td><%= $Id %></td>
+      <td><%= $User %></td>
+      <td><%= $Role %></td>
+      <td>
+        <div class="w3-dropdown-hover">
+          <button class="w3-button">Action</button>
+          <div class="w3-dropdown-content w3-bar-block w3-border">
+            <a href="/user/<%= $Id %>/edit" class="w3-bar-item w3-button">Edit</a>
+            <% if( $username ne $User ) { %>
+              <a onclick="document.getElementById('RemoveUser').textContent='<%= $User %>';document.getElementById('RemoveButton').href='/user/<%= $Id %>/remove';document.getElementById('id01').style.display='block'" class="w3-bar-item w3-button">Remove</a>
+            <% } %>
+            <!--
+            <a href="/user/<%= $Id %>/remove" class="w3-bar-item w3-button">Remove</a>
+            -->
+          </div>
+        </div> 
+      </td>
+    </tr>
+  <% } %>
+</table>
+<!-- The user list }}} -->

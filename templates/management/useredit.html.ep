@@ -1,0 +1,80 @@
+% layout 'master';
+% title 'Update User';
+
+<center>
+<h1><%= ucfirst( $action ); %> User</h1>
+
+<h6>
+<!-- Logic to display errors if any -->
+<font color=red>
+<% if($error_message){ %>
+<%= $error_message %>
+<% } %>
+</font>
+</h6>
+</center>
+
+<%
+  # Set defaults
+  $id                = "" if ! $id;
+
+  # Set action 'edit' parameters
+  my $Url            = "/user/$id/edit";
+  my $NameAttributes = qq{disabled="true"};
+  my $RoleAttributes = qq{};
+  my $PassAttributes = qq{};
+
+  print STDERR qq(>>>>>>>>>>>>>>>>>>>>>>$action\n);
+
+  if( $action eq "add" )
+  {
+    $Url            = "/user/add";
+    $NameAttributes = qq{required="true"};
+    $RoleAttributes = qq{required="true"};
+    $PassAttributes = qq{required="true"};
+  }
+  if( ! $action )
+  {
+    $Url            = "/user";
+    $NameAttributes = qq{disabled="true"};
+    $RoleAttributes = qq{disabled="true"};
+    $PassAttributes = qq{disabled="true"};
+  }
+%>
+
+<div class="w3-container w3-card-4 w3-light-gray">
+  <h2>Input Form</h2>
+  <form class="w3-container w3-light-grey" action="<%= $Url %>" method="post">
+    <p>
+      <label>User Name</label>
+      <input class="w3-input w3-border w3-round" name="username" placeholder="<%= $name%>" type="text" <%== $NameAttributes; %>>
+    </p>
+    <% if(  session('username') eq $name ) { %>
+      <p>
+        <label>Role</label>
+        <input class="w3-input w3-border w3-round" name="role" placeholder="<%= $role%>" type="text" <%== $RoleAttributes; %>>
+      </p>
+    <% } else { %>
+      <p>
+        <label>Role</label>
+        <select class="w3-select" name="role" <%== $RoleAttributes; %>>
+          <option value="" disabled selected>Choose role</option>
+          <option value="admin">admin</option>
+          <option value="user">user</option>
+        </select> 
+      </p>
+    <% } %>
+    <p>
+      <label>Password</label>
+      <input class="w3-input w3-border w3-round" name="password1" type="password" <%== $PassAttributes; %>>
+    </p>
+    <p>
+      <label>Password (repeated)</label>
+      <input class="w3-input w3-border w3-round" name="password2" type="password" <%== $PassAttributes; %>>
+    </p>
+    <p>
+      <input type="submit" class="w3-button w3-light-gray" type="submit" value="Go!">
+    </p>
+  </form>
+</div>
+

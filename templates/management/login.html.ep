@@ -12,15 +12,36 @@
 <% } %>
 </font>
 </h6>
-
-<form action="/login" method="post">
-
-    <b>UserName</b> <input type="text" name="username" required></br>
-    <b>Password</b> <input type="password" name="pass" required></br>
-
-    <input type="submit" value="Submit">
-    <input type="reset" value="Reset" />
-
-</form>
 </center>
+
+<div class="w3-container w3-card-4 w3-light-gray">
+  <h2>Input Form</h2>
+<form class="w3-container w3-light-grey" action="/login" method="post">
+<p>
+<label>User Name</label>
+<input class="w3-input w3-border w3-round" name="username" type="text" required="true"></p>
+<p>
+<label>Password</label>
+<input class="w3-input w3-border w3-round" name="password" type="password" required="true"></p>
+<p><input type="submit" class="w3-button w3-light-gray" type="submit" value="Go!"></p>
+</form>
+</div>
+
+<!--
+
+<div class="w3-container w3-light-gray">
+  <h2>Input Form</h2>
+</div>
+
+<form class="w3-container">
+  <p>
+  <label>First Name</label>
+  <input class="w3-input" type="text"></p>
+  <p>
+  <label>Last Name</label>
+  <input class="w3-input" type="text">
+  </p>
+</form>
+
+-->
 
