@@ -1,0 +1,27 @@
+% layout 'master';
+% title 'RCS User List';
+<h2 class="w3-text-teal"><%= $msg %></h2>
+
+<!-- The user list {{{ -->
+<p>
+<a href="/user/add" class="w3-bar-item w3-button">Add User</a>
+</p>
+<table class="w3-table w3-striped">
+  <tr>
+    <th>Identifier</th>
+    <th>Count</th>
+    <th>Load Date</th>
+    <th>Execution Date</th>
+    <th>Status</th>
+  </tr>
+  <% while( my( $Batch, $Count, $Loaded, $Executed, $Status ) = $sth->fetchrow_array ) { %>
+    <tr>
+      <td><%= $Batch %></td>
+      <td><%= $Count %></td>
+      <td><%= $Loaded %></td>
+      <td><%= $Executed %></td>
+      <td><%= $Status %></td>
+    </tr>
+  <% } %>
+</table>
+<!-- The user list }}} -->

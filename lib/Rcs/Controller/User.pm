@@ -13,7 +13,7 @@ sub debugInfo
 
   return if ! $DebugInfo;
 
-  $self->log->debug( __PACKAGE__ . ": $Message<<<" );
+  $self->log->debug( ">>>" . __PACKAGE__ . ": $Message<<<" );
 }
 
 # list {{{
@@ -43,6 +43,8 @@ sub list
 
   $Sth->finish;
   $self->debugInfo( "list end" );
+
+  1;
 }
 # list }}}
 
@@ -132,6 +134,11 @@ sub add
 
   $self->debugInfo( "add start" );
 
+  if( $self->session( 'role' ) ne "admin" )
+  {
+    $self->redirect_to( "/" );
+    return;
+  }
   # If method is GET show only the empty form
   if( $Method eq "GET" )
   {

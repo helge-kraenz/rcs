@@ -4,7 +4,7 @@ use Mojo::Base 'Mojolicious::Controller';
 use Rcs::Model::Users;
 use Digest::MD5 qw( md5_base64 );
 
-my $DebugInfo = undef;
+my $DebugInfo = 1;
 
 sub debugInfo
 {
@@ -13,7 +13,7 @@ sub debugInfo
 
   return if ! $DebugInfo;
 
-#  $self->log->debug( "--------------" );
+  $self->log->debug( "--------------" );
   $self->log->debug( ">>>$Message<<<" );
 #  $self->log->debug( "Aut: " . ( $self->session('is_auth') || "n/a" ) );
 #  $self->log->debug( "Usr: " . ( $self->session('username') || "n/a" ) );
@@ -142,6 +142,26 @@ sub loggedIn
   $self->redirect_to( '/login' , { error => "You are not logged in, please login to access this website" } );
 }
 # loggedIn }}}
+
+# admin {{{
+# Checks if a session is authenticated and returns true.
+# If not authenticated shows the login page and returns false.
+
+sub admin
+{
+  my $self = shift;
+
+  $self->debugInfo( "admin start" );
+  #$self->log->debug( "AUTH:" . $self->session( 'is_auth' ) || "" );
+  #$self->log->debug( "AUTH:" . $self->session( 'is_auth' ) || "" );
+
+  # Return if we are logged in already
+  return 1 if( $self->session( 'is_auth' ) && ( $self->session( 'role' ) eq 'admin' ) );
+
+  # If session flag not set re-direct to login page again.
+  $self->redirect_to( '/' );
+}
+# admin }}}
 
 # logout {{{
 sub logout
